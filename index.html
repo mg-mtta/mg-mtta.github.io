@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="MG-MTTA: Majorization-Guided Test-Time Adaptation for Vision-Language Models under Modality-Specific Shift." />
+  <meta name="theme-color" content="#fbfbf8" />
+  <meta property="og:title" content="MG-MTTA | ACM Multimedia 2026" />
+  <meta property="og:description" content="Reliability-aware multimodal test-time adaptation under modality-specific shift." />
+  <meta property="og:type" content="website" />
+  <title>MG-MTTA | ACM Multimedia 2026</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#top">MG-MTTA</a>
+    <nav aria-label="Primary navigation">
+      <a href="#abstract">Abstract</a>
+      <a href="#method">Method</a>
+      <a href="#results">Results</a>
+      <a href="#citation">BibTeX</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero page-width">
+      <p class="venue">ACM Multimedia 2026 · MM '26</p>
+      <h1>Majorization-Guided Test-Time Adaptation for Vision-Language Models under Modality-Specific Shift</h1>
+
+      <div class="authors" aria-label="Authors">
+        <a href="mailto:3123003175@mail2.gdut.edu.cn">Lixian Chen<sup>1</sup></a>
+        <span>Mingxuan Huang<sup>2</sup></span>
+        <span>Yanhui Chen<sup>1</sup></span>
+        <span>Junyi Lin<sup>1</sup></span>
+        <span>Yang Shi<sup>1</sup></span>
+      </div>
+
+      <p class="affiliations">
+        <sup>1</sup> Guangdong University of Technology
+        <span class="affiliation-separator">·</span>
+        <sup>2</sup> Sun Yat-Sen University
+      </p>
+
+      <p class="tagline">
+        MG-MTTA addresses the confidence-reliability mismatch in multimodal test-time adaptation by regulating modality fusion before confidence sharpening.
+      </p>
+
+      <div class="project-links">
+        <a class="project-link primary" href="https://doi.org/10.1145/3767308.3836429" target="_blank" rel="noreferrer">
+          <span aria-hidden="true">▤</span> Paper
+        </a>
+        <a class="project-link" href="https://github.com/cnLixianChen/Majorization-Guided-Multimodal-TTA" target="_blank" rel="noreferrer">
+          <span aria-hidden="true">⌘</span> Code
+        </a>
+        <a class="project-link" href="#citation">
+          <span aria-hidden="true">{ }</span> BibTeX
+        </a>
+      </div>
+    </section>
+
+    <figure class="teaser page-width">
+      <div class="figure-frame">
+        <img
+          src="assets/fig1.svg"
+          alt="Four-panel motivation figure comparing balanced fusion, text-biased fusion, entropy-only adaptation, and the reliability-aware MG-MTTA gate."
+          loading="eager"
+        />
+      </div>
+      <figcaption>
+        <strong>Motivation of MG-MTTA.</strong> Under modality-specific shift, entropy-driven adaptation can increase confidence without checking whether the dominant modality is reliable. MG-MTTA regulates modality contributions before posterior sharpening, reducing confident errors caused by unreliable modality dominance.
+      </figcaption>
+    </figure>
+
+    <section id="abstract" class="content-section page-width narrow">
+      <h2>Abstract</h2>
+      <p>
+        Vision-language models can face asymmetric visual and textual shifts at deployment. These shifts expose a multimodal failure mode in which an unreliable branch remains overconfident, dominates fusion, and causes entropy-based test-time adaptation to sharpen an incorrect prediction. We model this behavior as doubly stochastic posterior mixing and cast adaptation as constrained de-mixing. MG-MTTA freezes both encoders and updates only a lightweight fusion module. Running-anchor consistency estimates relative branch drift, while cross-modal conflict regulates modality dominance before entropy sharpening.
+      </p>
+      <p>
+        Across visual, textual, and joint shifts, MG-MTTA improves ImageNet top-1 accuracy from <strong>57.97%</strong> to <strong>66.51%</strong> under textual shift and from <strong>21.68%</strong> to <strong>26.27%</strong> under joint shift, while reducing wrong-more-confident failures.
+      </p>
+    </section>
+
+    <section id="method" class="content-section page-width">
+      <div class="section-title-row">
+        <div>
+          <p class="section-kicker">Approach</p>
+          <h2>Reliability-aware posterior control</h2>
+        </div>
+        <p>
+          MG-MTTA separates modality selection from confidence improvement: the gate controls dominance, entropy sharpens the fused posterior, and diversity regularizes the batch marginal.
+        </p>
+      </div>
+
+      <div class="method-list">
+        <article>
+          <span>01</span>
+          <h3>Frozen modality evidence</h3>
+          <p>Visual and textual encoders remain fixed. Test-time updates are confined to the lightweight fusion module.</p>
+        </article>
+        <article>
+          <span>02</span>
+          <h3>Observable reliability</h3>
+          <p>Running-anchor consistency tracks branch drift, while JS divergence and ranking disagreement measure cross-modal conflict.</p>
+        </article>
+        <article>
+          <span>03</span>
+          <h3>Guided fusion</h3>
+          <p>A soft reliability prior constrains modality dominance before entropy minimization sharpens the final prediction.</p>
+        </article>
+      </div>
+
+      <div class="equation-strip" aria-label="MG-MTTA formulation">
+        <div>
+          <span>Fusion</span>
+          <code>h<sub>f</sub> = αh<sub>v</sub> + (1 - α)h<sub>t</sub></code>
+        </div>
+        <div class="equation-divider"></div>
+        <div>
+          <span>Objective</span>
+          <code>ℒ = ℒ<sub>ent</sub> + λ<sub>g</sub>ℒ<sub>gate</sub> + λ<sub>d</sub>ℒ<sub>div</sub></code>
+        </div>
+      </div>
+    </section>
+
+    <section id="results" class="content-section results-section">
+      <div class="page-width">
+        <div class="section-title-row">
+          <div>
+            <p class="section-kicker">Results</p>
+            <h2>Performance under modality-specific shift</h2>
+          </div>
+          <p>
+            Top-1 accuracy on the main textual and joint benchmarks, together with reductions in wrong-more-confident failures.
+          </p>
+        </div>
+
+        <div class="primary-results">
+          <article>
+            <p>Textual shift</p>
+            <div class="comparison"><span>57.97</span><b>→</b><strong>66.51</strong></div>
+            <small>+8.54 percentage points over Source-only</small>
+          </article>
+          <article>
+            <p>Joint shift</p>
+            <div class="comparison"><span>21.68</span><b>→</b><strong>26.27</strong></div>
+            <small>+4.59 percentage points over Source-only</small>
+          </article>
+        </div>
+
+        <div class="diagnostic-results">
+          <div>
+            <span>Textual WMC</span>
+            <strong>46.50 → 28.21</strong>
+            <small>-18.29 pp vs. Entropy-only</small>
+          </div>
+          <div>
+            <span>Joint WMC</span>
+            <strong>58.63 → 49.07</strong>
+            <small>-9.56 pp vs. Entropy-only</small>
+          </div>
+          <div>
+            <span>Textual L5 probe</span>
+            <strong>25.48 → 65.88</strong>
+            <small>+40.40 pp over Source-only</small>
+          </div>
+          <div>
+            <span>Trainable parameters</span>
+            <strong>41.0K</strong>
+            <small>both encoders frozen</small>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section page-width narrow scope-note">
+      <h2>Scope</h2>
+      <p>
+        MG-MTTA controls late fusion rather than reconstructing semantic evidence lost inside an encoder. It is a lightweight complement to representation-level adaptation, not a universal replacement for it.
+      </p>
+    </section>
+
+    <section id="citation" class="content-section citation-section">
+      <div class="page-width narrow">
+        <div class="citation-heading">
+          <h2>BibTeX</h2>
+          <button class="copy-button" type="button" data-copy-target="bibtex">Copy</button>
+        </div>
+        <pre id="bibtex"><code>@inproceedings{chen2026mgmtta,
+  title     = {Majorization-Guided Test-Time Adaptation for Vision-Language Models under Modality-Specific Shift},
+  author    = {Chen, Lixian and Huang, Mingxuan and Chen, Yanhui and Lin, Junyi and Shi, Yang},
+  booktitle = {Proceedings of the 34th ACM International Conference on Multimedia},
+  year      = {2026},
+  doi       = {10.1145/3767308.3836429}
+}</code></pre>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer page-width">
+    <p>MG-MTTA · ACM Multimedia 2026</p>
+    <div>
+      <a href="https://doi.org/10.1145/3767308.3836429" target="_blank" rel="noreferrer">Paper</a>
+      <a href="https://github.com/cnLixianChen/Majorization-Guided-Multimodal-TTA" target="_blank" rel="noreferrer">Code</a>
+      <a href="mailto:3123003175@mail2.gdut.edu.cn">Contact</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
