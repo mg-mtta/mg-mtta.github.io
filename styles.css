@@ -188,19 +188,19 @@ nav a:last-child {
 .hero {
   position:relative;
   isolation:isolate;
-  text-align:center;
+  text-align:left;
   overflow:hidden
 }
 .hero-landscape {
   position:absolute;
   inset:0;
   z-index:-2;
-  background-image:radial-gradient(ellipse at 50% 34%,rgba(251,252,249,.45),rgba(251,252,249,.15) 58%,transparent 86%),linear-gradient(180deg,rgba(251,252,249,.12) 0%,rgba(251,252,249,.35) 55%,var(--paper) 100%),url('assets/hero-landscape.webp');
+  background-image:linear-gradient(90deg,rgba(251,252,249,.82) 0%,rgba(251,252,249,.62) 40%,rgba(251,252,249,.08) 85%),linear-gradient(180deg,rgba(251,252,249,.12) 0%,rgba(251,252,249,.35) 55%,var(--paper) 100%),url('assets/hero-landscape.webp');
   background-size:cover;
   background-position:center 62%
 }
 .hero-inner {
-  padding:64px 0 39px
+  padding:64px 0 64px
 }
 .venue {
   display:inline-flex;
@@ -239,17 +239,17 @@ nav a:last-child {
   color:#73926c
 }
 h1 {
-  margin:0 auto;
-  max-width:870px;
+  margin:28px 0 0;
+  max-width:810px;
   font:600 clamp(25px,2.3vw,34px)/1.35 var(--display);
   letter-spacing:-.017em;
-  text-wrap:balance;
+  text-wrap:pretty;
   color:#293f33
 }
 .authors {
   display:flex;
   flex-wrap:wrap;
-  justify-content:center;
+  justify-content:flex-start;
   gap:8px 23px;
   margin-top:25px;
   font-size:13px;
@@ -269,7 +269,7 @@ sup {
 .affiliations {
   display:flex;
   flex-wrap:wrap;
-  justify-content:center;
+  justify-content:flex-start;
   gap:4px 22px;
   font-size:11px;
   color:#5c6c60;
@@ -294,7 +294,7 @@ sup {
   display:flex;
   flex-wrap:wrap;
   gap:12px;
-  justify-content:center;
+  justify-content:flex-start;
   margin:23px 0 0
 }
 .button {
@@ -345,7 +345,7 @@ sup {
   font-size:9px;
   font-weight:600;
   letter-spacing:.15em;
-  margin:43px auto 0;
+  margin:43px 0 0;
   width:fit-content
 }
 .hero-scroll span {
@@ -1137,7 +1137,25 @@ thead th {
   color:#788670
 }
 .abstract-section {
-  padding-top:0
+  padding-top:0;
+  padding-bottom:0
+}
+.abstract-section .reading-heading {
+  border-top:0;
+  padding-top:36px;
+  margin-bottom:28px
+}
+.abstract-section .reading-heading h2 {
+  font-size:36px
+}
+.abstract-copy {
+  max-width:960px
+}
+.abstract-section + .section {
+  padding-top:80px
+}
+.results-limitations {
+  margin-top:32px
 }
 .reading-heading {
   border-top:1px solid var(--line);
@@ -1155,7 +1173,7 @@ thead th {
   margin-bottom:18px
 }
 .abstract-copy p {
-  font-size:13px;
+  font-size:14px;
   line-height:1.95;
   color:var(--muted);
   margin-top:0;
@@ -1571,7 +1589,7 @@ dialog>img {
     padding:0
   }
   .hero-inner {
-    padding:40px 0 31px
+    padding:40px 0 44px
   }
   .venue {
     font-size:9px;
@@ -1903,8 +1921,17 @@ dialog>img {
   .reading-heading h2 {
     font-size:35px
   }
+  .abstract-section .reading-heading {
+    padding-top:20px
+  }
+  .abstract-section .reading-heading h2 {
+    font-size:30px
+  }
+  .abstract-section + .section {
+    padding-top:55px
+  }
   .abstract-copy p {
-    font-size:12px;
+    font-size:13px;
     line-height:1.95
   }
   .scope-note h3 {
