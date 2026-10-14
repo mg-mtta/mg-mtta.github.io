@@ -1,170 +1,121 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="MG-MTTA: Majorization-Guided Test-Time Adaptation for Vision-Language Models under Modality-Specific Shift." />
-  <meta name="theme-color" content="#fbfbf8" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="MG-MTTA controls modality reliability before sharpening confidence. Majorization-guided vision-language test-time adaptation. ACM Multimedia 2026.">
+  <meta name="theme-color" content="#f8f9f5">
+  <meta property="og:title" content="MG-MTTA · Reliability before confidence">
+  <meta property="og:description" content="Majorization-Guided Test-Time Adaptation for Vision-Language Models under Modality-Specific Shift. ACM Multimedia 2026.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mg-mtta.github.io/">
+  <meta property="og:image" content="https://mg-mtta.github.io/assets/fig1.webp">
   <title>MG-MTTA | ACM Multimedia 2026</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;650;700&family=Source+Serif+4:opsz,wght@8..60,600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/hero-landscape.webp" as="image">
+  <link rel="stylesheet" href="styles.css">
+  <script src="benchmark.js" defer></script>
+  <script src="script.js" defer></script>
 </head>
 <body>
-  <header class="site-header page-width">
-    <a class="brand" href="#top">MG-MTTA</a>
-    <nav aria-label="Primary navigation">
-      <a href="#abstract">Abstract</a>
-      <a href="#method">Method</a>
-      <a href="#results">Results</a>
-      <a href="#citation">BibTeX</a>
-    </nav>
-  </header>
-
+  <a class="skip-link" href="#overview">Skip to research overview</a>
+  <svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-paper" viewBox="0 0 24 24"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8l-5-5Zm0 0v5h5M9 12h6m-6 4h6"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="m8 6-6 6 6 6m8-12 6 6-6 6m-3-14-2 16"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="3"/><path d="M15 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h3"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 4v3"/></symbol>
+    <symbol id="i-expand" viewBox="0 0 24 24"><path d="M14 4h6v6M10 20H4v-6m16-10-6 6M4 20l6-6"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-text" viewBox="0 0 24 24"><path d="M4 5h16M12 5v15m-4 0h8M4 5v3m16-3v3"/></symbol>
+  </svg>
+  <header class="site-header"><div class="page-width header-inner">
+    <a class="brand" href="#top" aria-label="MG-MTTA, back to top"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>MG-MTTA</a>
+    <button id="menu-toggle" class="icon-button menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="primary-nav" hidden><svg class="icon"><use href="#i-menu"/></svg></button>
+    <nav id="primary-nav" aria-label="Primary navigation"><a href="#overview">Overview</a><a href="#method">Method</a><a href="#results">Results</a><a href="#citation">Citation <span aria-hidden="true">↗</span></a></nav>
+  </div></header>
   <main id="top">
-    <section class="hero page-width">
-      <p class="venue">ACM Multimedia 2026 · MM ’26</p>
-      <h1>Majorization-Guided Test-Time Adaptation for Vision-Language Models under Modality-Specific Shift</h1>
-
-      <div class="authors" aria-label="Authors">
-        <a href="mailto:3123003175@mail2.gdut.edu.cn">Lixian Chen<sup>1</sup></a>
-        <span>Mingxuan Huang<sup>2</sup></span>
-        <span>Yanhui Chen<sup>1</sup></span>
-        <span>Junyi Lin<sup>1</sup></span>
-        <span>Yang Shi<sup>1</sup></span>
-      </div>
-
-      <p class="affiliations">
-        <sup>1</sup> Guangdong University of Technology
-        <span>·</span>
-        <sup>2</sup> Sun Yat-Sen University
-      </p>
-
-      <p class="tagline">Reliability-aware fusion for multimodal test-time adaptation under modality-specific shift.</p>
-
-      <div class="project-links">
-        <a class="project-link primary" href="https://arxiv.org/pdf/2604.24602" target="_blank" rel="noreferrer">Paper</a>
-        <a class="project-link" href="https://github.com/cnLixianChen/Majorization-Guided-Multimodal-TTA" target="_blank" rel="noreferrer">Code</a>
-        <a class="project-link" href="#citation">BibTeX</a>
+    <section class="hero" aria-labelledby="paper-title">
+      <div class="hero-landscape" aria-hidden="true"></div>
+      <div class="hero-inner page-width">
+        <p class="venue"><span class="venue-dot" aria-hidden="true"></span> ACM Multimedia 2026 <span class="venue-divider" aria-hidden="true">/</span> MM ’26</p>
+        <p class="hero-wordmark" aria-hidden="true">MG<span class="wordmark-dash">–</span>MTTA<span class="wordmark-dot">.</span></p>
+        <h1 id="paper-title">Majorization-Guided Test-Time Adaptation<br class="desktop-break"> for Vision-Language Models<br class="desktop-break"> under Modality-Specific Shift</h1>
+        <div class="authors" aria-label="Authors"><a href="mailto:3123003175@mail2.gdut.edu.cn">Lixian Chen<sup>1</sup></a><span>Mingxuan Huang<sup>2</sup></span><span>Yanhui Chen<sup>1</sup></span><span>Junyi Lin<sup>1</sup></span><span>Yang Shi<sup>1</sup></span></div>
+        <p class="affiliations"><span><sup>1</sup> Guangdong University of Technology</span><span><sup>2</sup> Sun Yat-Sen University</span></p>
+        <p class="hero-takeaway">Trust the right modality.<br class="mobile-break"> <em>Then sharpen the prediction.</em></p>
+        <div class="project-links">
+          <a class="button button-primary" href="https://arxiv.org/pdf/2604.24602" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true"><use href="#i-paper"/></svg>Read the paper<svg class="icon small" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="button button-glass" href="https://github.com/cnLixianChen/Majorization-Guided-Multimodal-TTA" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true"><use href="#i-code"/></svg>Explore code</a>
+          <a class="button button-glass" href="#citation"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg>BibTeX</a>
+        </div>
+        <a class="hero-scroll" href="#overview">THE IDEA IN A MINUTE <span aria-hidden="true">↓</span></a>
       </div>
     </section>
-
-    <figure class="teaser page-width">
-      <img
-        src="assets/fig1.webp"
-        alt="Four-panel motivation figure comparing balanced fusion, text-biased fusion, entropy-only adaptation, and the reliability-aware MG-MTTA gate."
-      />
-      <figcaption>
-        <strong>Motivation.</strong> Entropy-driven adaptation can sharpen an incorrect prediction when an unreliable modality dominates fusion. MG-MTTA regulates modality contribution using reliability and conflict cues before confidence sharpening.
-      </figcaption>
-    </figure>
-
-    <div class="content-flow page-width">
-      <section id="abstract" class="paper-section abstract-section">
-        <div class="section-label">Abstract</div>
-        <div class="section-body prose">
-          <p>
-            Vision-language models can face asymmetric visual and textual shifts at deployment. These shifts expose a multimodal failure mode in which an unreliable branch remains overconfident, dominates fusion, and causes entropy-based test-time adaptation to sharpen an incorrect prediction. We model this behavior as doubly stochastic posterior mixing and cast adaptation as constrained de-mixing.
-          </p>
-          <p>
-            MG-MTTA freezes both encoders and updates only a lightweight fusion module. Running-anchor consistency estimates relative branch drift, while cross-modal conflict regulates modality dominance before entropy sharpening. On ImageNet, MG-MTTA improves top-1 accuracy from <strong>57.97%</strong> to <strong>66.51%</strong> under textual shift and from <strong>21.68%</strong> to <strong>26.27%</strong> under joint shift.
-          </p>
-        </div>
-      </section>
-
-      <section id="method" class="paper-section method-section">
-        <div class="section-label">
-          <span>Method</span>
-          <h2>Reliability-aware posterior control</h2>
-        </div>
-        <div class="section-body">
-          <p class="section-intro">
-            MG-MTTA separates modality selection from confidence improvement: the fusion gate controls which branch should dominate, then entropy minimization sharpens the fused posterior.
-          </p>
-
-          <div class="method-steps">
-            <article>
-              <span>01</span>
-              <h3>Frozen evidence</h3>
-              <p>Visual and textual encoders remain fixed; adaptation is confined to a lightweight fusion module.</p>
-            </article>
-            <article>
-              <span>02</span>
-              <h3>Reliability cues</h3>
-              <p>Running-anchor consistency tracks branch drift, while JS and ranking disagreement capture cross-modal conflict.</p>
-            </article>
-            <article>
-              <span>03</span>
-              <h3>Guided fusion</h3>
-              <p>A soft gate prior limits unreliable modality dominance before posterior sharpening.</p>
-            </article>
-          </div>
-
-          <div class="equation-row">
-            <div><span>Fusion</span><code>h<sub>f</sub> = αh<sub>v</sub> + (1 − α)h<sub>t</sub></code></div>
-            <div><span>Objective</span><code>ℒ = ℒ<sub>ent</sub> + λ<sub>g</sub>ℒ<sub>gate</sub> + λ<sub>d</sub>ℒ<sub>div</sub></code></div>
-          </div>
-        </div>
-      </section>
-
-      <section id="results" class="paper-section results-section">
-        <div class="section-label">
-          <span>Results</span>
-          <h2>Strongest gains under asymmetric reliability</h2>
-        </div>
-        <div class="section-body">
-          <div class="result-main">
-            <article>
-              <span>Textual shift</span>
-              <div><em>57.97</em><b>→</b><strong>66.51</strong></div>
-              <small>+8.54 pp over Source-only</small>
-            </article>
-            <article>
-              <span>Joint shift</span>
-              <div><em>21.68</em><b>→</b><strong>26.27</strong></div>
-              <small>+4.59 pp over Source-only</small>
-            </article>
-          </div>
-
-          <div class="result-secondary">
-            <div><span>Textual WMC</span><strong>46.50 → 28.21</strong><small>−18.29 pp</small></div>
-            <div><span>Joint WMC</span><strong>58.63 → 49.07</strong><small>−9.56 pp</small></div>
-            <div><span>Textual L5</span><strong>25.48 → 65.88</strong><small>+40.40 pp</small></div>
-            <div><span>Trainable params.</span><strong>41.0K</strong><small>encoders frozen</small></div>
-          </div>
-
-          <p class="scope-inline"><strong>Scope.</strong> MG-MTTA controls late fusion and complements representation-level adaptation; it does not reconstruct evidence already lost inside an encoder.</p>
-        </div>
-      </section>
-
-      <section id="citation" class="paper-section citation-section">
-        <div class="section-label">BibTeX</div>
-        <div class="section-body">
-          <div class="citation-box">
-            <button class="copy-button" type="button" data-copy-target="bibtex">Copy</button>
-            <pre id="bibtex"><code>@inproceedings{chen2026mgmtta,
+    <div class="highlights page-width" aria-label="Key research results">
+      <div><span class="metric-label">Textual shift</span><p><strong>+8.54</strong><span>pp</span></p><span class="metric-context">ImageNet accuracy vs. Source-only</span></div>
+      <div><span class="metric-label">Joint shift</span><p><strong>+4.59</strong><span>pp</span></p><span class="metric-context">ImageNet accuracy vs. Source-only</span></div>
+      <div><span class="metric-label">Lightweight adaptation</span><p><strong>41.0</strong><span>K</span></p><span class="metric-context">Trainable parameters · frozen encoders</span></div>
+    </div>
+    <section id="overview" class="section page-width" aria-labelledby="overview-heading">
+      <div class="section-heading split-heading"><div><p class="eyebrow"><span>01</span> THE PROBLEM</p><h2 id="overview-heading">More confident.<br><em>Still wrong.</em></h2></div><p class="section-intro">When images and text shift differently, confidence stops being a reliable guide. A degraded modality can dominate fusion—and entropy minimization can make the wrong answer even sharper.</p></div>
+      <div class="comparison-strip"><div class="comparison-path"><span class="path-label">ENTROPY-ONLY</span><p>Biased fusion <span aria-hidden="true">→</span> Sharper wrong prediction</p><span class="path-note">Controls confidence, without checking modality reliability.</span></div><div class="comparison-path our-path"><span class="path-label">MG-MTTA</span><p>Reliability-guided fusion <span aria-hidden="true">→</span> Controlled sharpening</p><span class="path-note">Regulates which modality drives the fused decision.</span></div></div>
+      <figure class="motivation-figure"><div class="figure-frame"><img src="assets/fig1.webp" width="1800" height="988" alt="Four-panel illustration: balanced fusion predicts dog; text-biased fusion predicts cat; entropy-only adaptation sharpens the incorrect answer; reliability-aware MG-MTTA controls the gate to favor reliable evidence."><button class="figure-expand" data-open-figure type="button" aria-label="Enlarge the motivation figure" hidden><svg class="icon" aria-hidden="true"><use href="#i-expand"/></svg>View figure</button></div><figcaption><span>FIGURE 01</span> The failure is in how evidence is weighted. MG-MTTA uses reliability and conflict cues to regulate modality contribution before sharpening confidence.</figcaption></figure>
+      <div class="contribution-grid">
+        <article><span class="contribution-index">i.</span><h3>A failure mode, made explicit.</h3><p>We identify the confidence–reliability mismatch behind <strong>wrong-more-confident</strong> (WMC) predictions in multimodal adaptation.</p></article>
+        <article><span class="contribution-index">ii.</span><h3>A principled control perspective.</h3><p>Majorization frames adaptation as constrained posterior de-mixing, with sufficient conditions for beneficial concentration and a modality-dominance threshold.</p></article>
+        <article><span class="contribution-index">iii.</span><h3>A small update, where it matters.</h3><p>Keep both encoders frozen. Adapt only a lightweight fusion module, evaluated through robustness, reliability diagnostics and objective ablation.</p></article>
+      </div>
+    </section>
+    <section id="method" class="method-section section" aria-labelledby="method-heading"><div class="page-width">
+      <div class="section-heading split-heading"><div><p class="eyebrow"><span>02</span> THE METHOD</p><h2 id="method-heading">Reliability first.<br><em>Confidence second.</em></h2></div><p class="section-intro">Separate modality selection from confidence improvement. Observable branch drift and cross-modal conflict guide the fusion gate; entropy then sharpens the fused posterior.</p></div>
+      <div class="pipeline" aria-label="Method overview: frozen encoders, reliability cues, adaptive fusion and prediction">
+        <div class="pipeline-stage evidence-stage"><p class="stage-number">01 / EXTRACT EVIDENCE</p><div class="encoder"><svg class="icon" aria-hidden="true"><use href="#i-eye"/></svg><div><strong>Vision encoder</strong><span>Visual logits h<sub>v</sub></span></div><svg class="icon lock" aria-label="Frozen"><use href="#i-lock"/></svg></div><div class="encoder"><svg class="icon" aria-hidden="true"><use href="#i-text"/></svg><div><strong>Text encoder</strong><span>Textual logits h<sub>t</sub></span></div><svg class="icon lock" aria-label="Frozen"><use href="#i-lock"/></svg></div><p class="stage-detail">Both backbones stay frozen.</p></div>
+        <div class="pipeline-arrow" aria-hidden="true">→</div>
+        <div class="pipeline-stage cues-stage"><p class="stage-number">02 / ESTIMATE RELIABILITY</p><h3>Drift + disagreement</h3><ul class="cue-list"><li><span class="cue-dot"></span>Running-anchor consistency</li><li><span class="cue-dot"></span>Jensen–Shannon divergence</li><li><span class="cue-dot"></span>Class-ranking disagreement</li></ul><p class="stage-detail">Build a soft prior over the fusion gate.</p></div>
+        <div class="pipeline-arrow" aria-hidden="true">→</div>
+        <div class="pipeline-stage gate-stage"><p class="stage-number">03 / ADAPT THE FUSION</p><span class="adaptive-badge">ONLY THIS MODULE UPDATES</span><h3>Reliability-guided gate</h3><div class="fusion-meter" aria-hidden="true"><span>Vision</span><span>Text</span></div><p class="stage-detail">Control modality contribution.<br>Then sharpen the prediction.</p></div>
+      </div>
+      <div class="equations"><div><span class="equation-label">LOGIT-LEVEL FUSION</span><p class="math">h<sub>f</sub> = αh<sub>v</sub> + (1 − α)h<sub>t</sub></p><p>The gate controls the relative weight of each modality.</p></div><div><span class="equation-label">ADAPTATION OBJECTIVE</span><p class="math">ℒ = ℒ<sub>ent</sub> + λ<sub>g</sub>ℒ<sub>gate</sub> + λ<sub>d</sub>ℒ<sub>div</sub></p><p>Sharpen confidence, constrain dominance, preserve diversity.</p></div></div>
+      <details class="theory-details"><summary>What does majorization tell us?<span class="details-plus" aria-hidden="true">+</span></summary><div><p>Doubly stochastic mixing makes a posterior less concentrated. Majorization characterizes a candidate de-mixing direction, but entropy reduction alone can still sharpen the wrong class. The analysis therefore includes ranking preservation and proximity to the clean decision margin.</p><p>These are <strong>sufficient conditions</strong> involving latent clean quantities. Anchor consistency and conflict are practical control signals; they do not certify correctness for each test sample. See <a class="inline-link" href="https://arxiv.org/html/2604.24602v4#S3.SS4" target="_blank" rel="noopener noreferrer">Section 3.4 of the paper ↗</a>.</p></div></details>
+    </div></section>
+    <section id="results" class="section page-width" aria-labelledby="results-heading">
+      <div class="section-heading split-heading"><div><p class="eyebrow"><span>03</span> THE EVIDENCE</p><h2 id="results-heading">Better fusion.<br><em>Measurable gains.</em></h2></div><p class="section-intro">The strongest gains appear when the two branches differ in reliability. Matched adaptation baselines use the same trainable parameters, isolating the effect of fusion control.</p></div>
+      <div class="benchmark-panel">
+        <div class="benchmark-toolbar"><div><span class="panel-kicker">MAIN BENCHMARK · CLIP ViT-B/16</span><h3>ImageNet top-1 accuracy</h3></div><div class="condition-control" role="group" aria-label="Benchmark shift condition"><button type="button" data-result-condition="textual" aria-pressed="true" aria-controls="benchmark-content" disabled>Textual shift</button><button type="button" data-result-condition="joint" aria-pressed="false" aria-controls="benchmark-content" disabled>Joint shift</button></div></div>
+        <div id="benchmark-content" class="benchmark-content"><div><p class="chart-axis">ACCURACY (%) <span>0 — 100</span></p><div id="benchmark-bars" class="bar-chart" role="img" aria-label="Textual shift accuracy: Source-only 57.97, Entropy-only 55.40, Entropy plus Diversity 55.38, SAR 56.84, TPT 56.05, BATCLIP 60.61, MG-MTTA 66.51 percent.">
+          <div class="bar-row"><span class="bar-name">Source-only</span><div class="bar-track"><div class="bar-fill source-bar" style="--score:57.97%"></div></div><span class="bar-value">57.97</span></div>
+          <div class="bar-row"><span class="bar-name">Entropy-only</span><div class="bar-track"><div class="bar-fill" style="--score:55.40%"></div></div><span class="bar-value">55.40</span></div>
+          <div class="bar-row"><span class="bar-name">Entropy + Diversity</span><div class="bar-track"><div class="bar-fill" style="--score:55.38%"></div></div><span class="bar-value">55.38</span></div>
+          <div class="bar-row"><span class="bar-name">SAR</span><div class="bar-track"><div class="bar-fill external-bar" style="--score:56.84%"></div></div><span class="bar-value">56.84</span></div>
+          <div class="bar-row"><span class="bar-name">TPT</span><div class="bar-track"><div class="bar-fill external-bar" style="--score:56.05%"></div></div><span class="bar-value">56.05</span></div>
+          <div class="bar-row"><span class="bar-name">BATCLIP</span><div class="bar-track"><div class="bar-fill external-bar" style="--score:60.61%"></div></div><span class="bar-value">60.61</span></div>
+          <div class="bar-row ours-row"><span class="bar-name">MG-MTTA <small>OURS</small></span><div class="bar-track"><div class="bar-fill ours-bar" style="--score:66.51%"></div></div><span class="bar-value">66.51</span></div>
+        </div></div><aside class="result-callout"><p>Reliability makes<br>the difference.</p><div class="result-gain"><span id="benchmark-gain">+8.54</span><small>pp</small></div><p class="gain-context">vs. Source-only</p><p id="benchmark-summary" class="benchmark-summary" role="status" aria-live="polite">57.97% → 66.51%<br>+11.11 pp vs. Entropy-only</p></aside></div>
+        <p id="benchmark-caption" class="benchmark-caption">Textual: label-preserving prompt perturbations, averaged over L1–L4. The visual input remains unchanged. Three-seed averages; Table 1.</p>
+        <details class="benchmark-data"><summary>View the complete benchmark table<span class="details-plus" aria-hidden="true">+</span></summary><div class="table-scroll" tabindex="0" role="region" aria-label="Complete benchmark comparison"><table><caption>Top-1 accuracy (%), Table 1. Best value in each condition is bold.</caption><thead><tr><th scope="col">Method</th><th scope="col">CIFAR-100C</th><th scope="col">ImageNet-C</th><th scope="col">Textual</th><th scope="col">Joint</th></tr></thead><tbody>
+          <tr><th scope="row">Source-only</th><td>35.80</td><td>25.45</td><td>57.97</td><td>21.68</td></tr><tr><th scope="row">TENT</th><td>37.96</td><td>25.64</td><td>—</td><td>—</td></tr><tr><th scope="row">SAR</th><td>41.42</td><td>29.70</td><td>56.84</td><td>25.61</td></tr><tr><th scope="row">TPT</th><td>36.20</td><td>24.90</td><td>56.05</td><td>24.07</td></tr><tr><th scope="row">BATCLIP</th><td><strong>42.21</strong></td><td><strong>30.70</strong></td><td>60.61</td><td><strong>29.29</strong></td></tr><tr><th scope="row">Entropy-only</th><td>37.96</td><td>26.39</td><td>55.40</td><td>21.68</td></tr><tr><th scope="row">Entropy + Diversity</th><td>38.10</td><td>26.29</td><td>55.38</td><td>21.76</td></tr><tr class="ours-table-row"><th scope="row">MG-MTTA (Ours)</th><td>38.11</td><td>26.32</td><td><strong>66.51</strong></td><td>26.27</td></tr>
+        </tbody></table></div><p class="table-note">Visual: 15 common corruption types at severity 5. Textual: L1–L4. Joint: severity-5 visual corruption combined with L1–L4 text perturbations. TENT is a visual-only reference.</p></details>
+      </div>
+      <p class="results-scope"><strong>Where it helps.</strong> MG-MTTA leads this comparison under textual shift. BATCLIP achieves higher visual-only and joint accuracy. Fusion control complements adaptation of representations and alignment.</p>
+      <div class="diagnostic-grid">
+        <article class="diagnostic-card wmc-card"><p class="panel-kicker">FAILURE DIAGNOSIS · FIGURE 3</p><h3>Fewer confident mistakes.</h3><p class="diagnostic-description">A wrong-more-confident (WMC) event is an incorrect adapted prediction with higher confidence than before adaptation.</p><div class="wmc-result"><div><span>Textual shift</span><p><span>46.50</span><span class="number-arrow" aria-hidden="true">→</span><strong>28.21<small>%</small></strong></p></div><span class="delta-pill">−18.29 pp</span></div><div class="wmc-result"><div><span>Joint shift</span><p><span>58.63</span><span class="number-arrow" aria-hidden="true">→</span><strong>49.07<small>%</small></strong></p></div><span class="delta-pill">−9.56 pp</span></div><p class="protocol-note">Entropy-only → MG-MTTA. Lower is better. Separate diagnostic stream, distinct from the L1–L4 benchmark.</p></article>
+        <article class="diagnostic-card l5-card"><p class="panel-kicker">STRONGEST TEXT-SIDE PROBE · TABLE 2</p><h3>When text degrades severely.</h3><p class="diagnostic-description">Under the L5 textual probe, entropy and diversity alone do not explain the recovery.</p><div class="l5-comparison"><div><span>Source-only</span><strong>25.48<small>%</small></strong></div><span class="l5-arrow" aria-hidden="true">→</span><div><span>MG-MTTA</span><strong>65.88<small>%</small></strong></div></div><p class="l5-gain">+40.40 percentage points</p><p class="l5-baselines">Entropy-only: 22.11% · Entropy + Diversity: 22.14%</p><p class="protocol-note">L5 is a separate ablation condition and is excluded from the main benchmark.</p></article>
+      </div>
+      <div class="efficiency-line"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><strong>Frozen encoders. Lightweight updates.</strong><span>41.0K trainable parameters</span><span>1.64 GB peak memory</span><span class="efficiency-source">Table 1 · NVIDIA H20</span></div>
+    </section>
+    <section id="abstract" class="abstract-section section page-width" aria-labelledby="abstract-heading"><div class="reading-heading"><p class="eyebrow"><span>04</span> A CLOSER READ</p><h2 id="abstract-heading">The research, in full.</h2></div><div class="abstract-layout"><div class="abstract-copy"><h3>Abstract</h3><p>Vision–language models can face asymmetric visual and textual shifts at deployment. These shifts expose a multimodal failure mode in which an unreliable branch remains overconfident, dominates fusion, and causes entropy-based test-time adaptation to sharpen an incorrect prediction. We model this behavior as doubly stochastic posterior mixing and cast adaptation as constrained de-mixing.</p><p>Majorization-Guided Multimodal Test-Time Adaptation (MG-MTTA) freezes both encoders and updates only a lightweight fusion module. Running-anchor consistency estimates relative branch drift, while cross-modal conflict regulates modality dominance before entropy sharpening. The analysis gives sufficient conditions for entropy reduction to preserve the clean decision and an explicit threshold at which a biased modality reverses the fused ranking.</p><p>Across visual, textual, and joint shifts, MG-MTTA improves ImageNet top-1 accuracy from 57.97% to 66.51% under textual shift and from 21.68% to 26.27% under joint shift, while reducing wrong-more-confident failures. The largest gains occur under textual and joint shifts, where the two branches differ more in reliability.</p></div><aside class="scope-note"><span class="panel-kicker">SCOPE & PERSPECTIVE</span><h3>Control the fusion.<br>Preserve the evidence.</h3><p>The evaluation covers classification under controlled, label-preserving shifts. Fusion control cannot recover evidence already lost inside an encoder.</p><p>Reliability is relative: when both modalities deteriorate similarly, or running anchors accumulate bias, the signal may weaken.</p><a class="inline-link" href="https://arxiv.org/html/2604.24602v4#S5" target="_blank" rel="noopener noreferrer">Read the limitations ↗</a></aside></div></section>
+    <section id="citation" class="citation-section section page-width" aria-labelledby="citation-heading"><div class="citation-heading"><div><p class="eyebrow"><span>05</span> BUILD ON THIS WORK</p><h2 id="citation-heading">Read. Reproduce. Cite.</h2></div><a class="button button-secondary" href="https://arxiv.org/pdf/2604.24602" target="_blank" rel="noopener noreferrer">Full paper<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a></div><div class="citation-box"><div class="citation-toolbar"><span>BibTeX</span><div><span id="copy-status" role="status" aria-live="polite"></span><button id="copy-citation" class="button copy-button" type="button"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg><span>Copy citation</span></button></div></div><pre id="bibtex" tabindex="0" aria-label="BibTeX citation"><code>@inproceedings{chen2026mgmtta,
   title     = {Majorization-Guided Test-Time Adaptation for Vision-Language Models under Modality-Specific Shift},
   author    = {Chen, Lixian and Huang, Mingxuan and Chen, Yanhui and Lin, Junyi and Shi, Yang},
   booktitle = {Proceedings of the 34th ACM International Conference on Multimedia},
   year      = {2026},
   doi       = {10.1145/3767308.3836429}
-}</code></pre>
-          </div>
-        </div>
-      </section>
-    </div>
+}</code></pre></div></section>
   </main>
-
-  <footer class="site-footer page-width">
-    <p>MG-MTTA · ACM Multimedia 2026</p>
-    <div>
-      <a href="https://doi.org/10.1145/3767308.3836429" target="_blank" rel="noreferrer">Paper</a>
-      <a href="https://github.com/cnLixianChen/Majorization-Guided-Multimodal-TTA" target="_blank" rel="noreferrer">Code</a>
-      <a href="mailto:3123003175@mail2.gdut.edu.cn">Contact</a>
-    </div>
-  </footer>
-
-  <script src="script.js"></script>
+  <footer class="site-footer page-width"><div><a class="brand" href="#top">MG-MTTA<span class="footer-dot">.</span></a><p>Reliability before confidence.</p><span>ACM Multimedia 2026</span></div><div class="footer-links"><a href="https://doi.org/10.1145/3767308.3836429" target="_blank" rel="noopener noreferrer">Publication ↗</a><a href="https://github.com/cnLixianChen/Majorization-Guided-Multimodal-TTA" target="_blank" rel="noopener noreferrer">Code ↗</a><a href="mailto:3123003175@mail2.gdut.edu.cn">Contact</a><a href="#top">Back to top ↑</a></div></footer>
+  <dialog id="figure-dialog" aria-labelledby="figure-dialog-title"><div class="dialog-toolbar"><h2 id="figure-dialog-title">Motivation · Figure 1</h2><button id="close-figure" class="icon-button" type="button" aria-label="Close figure"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button></div><img src="assets/fig1.webp" width="1800" height="988" alt="Expanded four-panel illustration comparing balanced fusion, biased fusion, entropy-only adaptation, and MG-MTTA reliability-aware gating."></dialog>
 </body>
 </html>
